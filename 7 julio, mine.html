@@ -110,6 +110,32 @@
       white-space: pre-wrap;
       font-family: 'Quicksand', sans-serif;
     }
+    .corazonCarga {
+  position: absolute;
+  top: -40px;
+  color: #b57ee0;
+  font-size: 20px;
+  user-select: none;
+  pointer-events: none;
+  animation-name: caerCarga;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 2px #a379d8);
+  z-index: 400;
+}
+
+@keyframes caerCarga {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
     @keyframes movimientoLyrics {
       0% { transform: translate(-50%, 0); }
       100% { transform: translate(-50%, -10px); }
@@ -264,7 +290,7 @@
       background: #5c2c90;
     }
     #errorNombre {
-      color: #c13c3c;
+      color: #ffffff;
       font-weight: 700;
       font-size: 1rem;
       height: 24px;
@@ -272,6 +298,51 @@
       text-align: center;
       min-height: 24px;
     }
+.animacionEntrada {
+  animation: entradaBonita 1.2s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes entradaBonita {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animacionEntradaLyrics {
+  animation: entradaBonitaLyrics 1.2s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes entradaBonitaLyrics {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+}
+
+
+@keyframes entradaBonita {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+
   </style>
 </head>
 <body>
@@ -405,8 +476,7 @@ const textoIntro = document.getElementById('textoIntro');
 const mensajesError = [
   "Tú no eres a quien le hice esta página, fuimono 🤭",
   "Nombre incorrecto, inténtalo otra vez 😅",
-  "¿Seguro que eres tú? 😔",
-  "No te rindas, inténtalo de nuevo 🥺",
+  "¿Segura que eres tú? 😔",
   "¡Ups! Ese no es el nombre correcto 🤨"
 ];
 
@@ -428,39 +498,49 @@ btnEnviarNombre.addEventListener('click', () => {
   const nombresValidos = ['karina', 'kari', 'karisita'];
 
   if(nombresValidos.includes(nombreIngresado)){
-    errorNombre.textContent = '';
-    // Ocultar intro y mostrar pantalla carga
-    intro.style.display = 'none';
-    pantallaCarga.style.display = 'flex';
+  errorNombre.textContent = '';
+  // Ocultar intro y mostrar pantalla carga
+  intro.style.display = 'none';
+  pantallaCarga.style.display = 'flex';
 
-    // Animar frases y barra
-    let i = 0;
+  // Aquí agrega esta línea para iniciar corazones:
+  iniciarCorazonesCarga();
+
+  // Animar frases y barra
+  let i = 0;
+  fraseCarga.textContent = frasesCarga[i];
+  const fraseInterval = setInterval(() => {
+    i++;
+    if(i >= frasesCarga.length) i = 0;
     fraseCarga.textContent = frasesCarga[i];
-    const fraseInterval = setInterval(() => {
-      i++;
-      if(i >= frasesCarga.length) i = 0;
-      fraseCarga.textContent = frasesCarga[i];
-    }, 1200);
+  }, 1200);
 
-    barraCargaInner.style.width = '0%';
-    barraCargaInner.style.animation = 'none';
-    void barraCargaInner.offsetWidth; // reflow para reiniciar animación
-    barraCargaInner.style.animation = 'llenarBarra 5s linear forwards';
+  barraCargaInner.style.width = '0%';
+  barraCargaInner.style.animation = 'none';
+  void barraCargaInner.offsetWidth; // reflow para reiniciar animación
+  barraCargaInner.style.animation = 'llenarBarra 5s linear forwards';
 
-    setTimeout(() => {
-      clearInterval(fraseInterval);
-      pantallaCarga.style.display = 'none';
-      contenido.style.opacity = 1;
-      lyrics.style.opacity = 1;
-      clickToPlay.classList.add('show');
-    }, 5200);
+setTimeout(() => {
+  clearInterval(fraseInterval);
+  pantallaCarga.style.display = 'none';
 
-  } else {
+  // Animaciones de entrada
+  contenido.classList.add('animacionEntrada');
+  lyrics.classList.add('animacionEntradaLyrics');
+
+  clickToPlay.classList.add('show');
+}, 5200);
+
+
+} else {
+  // ...
+
     // Mostrar mensaje de error aleatorio gracioso
     const randomIndex = Math.floor(Math.random() * mensajesError.length);
     errorNombre.textContent = mensajesError[randomIndex];
     inputNombre.focus();
   }
+  
 });
 
 // Emojis que caen y toques en pantalla
@@ -531,6 +611,27 @@ document.body.addEventListener('click', () => {
     iniciarMusica();
   }
 }, { once: true });
+let intervaloCorazonesCarga;
+
+function iniciarCorazonesCarga() {
+  intervaloCorazonesCarga = setInterval(() => {
+    const corazon = document.createElement('div');
+    corazon.classList.add('corazonCarga');
+    corazon.textContent = '💜';
+    corazon.style.left = Math.random() * window.innerWidth + 'px';
+    corazon.style.fontSize = (20 + Math.random() * 20) + 'px';
+    corazon.style.animationDuration = (3 + Math.random() * 3) + 's';
+    document.getElementById('pantallaCarga').appendChild(corazon);
+    setTimeout(() => {
+      corazon.remove();
+    }, 6000);
+  }, 200);
+}
+
+function detenerCorazonesCarga() {
+  clearInterval(intervaloCorazonesCarga);
+  document.querySelectorAll('.corazonCarga').forEach(c => c.remove());
+}
 
   </script>
 </body>
