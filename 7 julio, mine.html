@@ -631,30 +631,34 @@ const iniciarMusica = () => {
 
   audio.pause();
   audio.volume = 0;
-  
-  // Primero intentamos empezar desde el inicio (0s)
   audio.currentTime = 0;
-  
+
   audio.play().then(() => {
-    // Esperamos a que el audio tenga datos suficientes para saltar
-    const trySetTime = () => {
-      if (audio.readyState >= 2) { // HAVE_CURRENT_DATA o más
+    const saltarAlTiempo = () => {
+      // Verificamos que el audio esté listo para cambiar el tiempo
+      if (audio.readyState >= 2) {
         try {
-          audio.currentTime = startAt;
+          audio.currentTime = startAt; // 170 segundos
+          // Si el audio está pausado por el salto, reproducir de nuevo
+          if (audio.paused) {
+            audio.play();
+          }
           fadeIn();
-        } catch (e) {
-          // Si falla, reintentamos en 100ms
-          setTimeout(trySetTime, 100);
+        } catch (error) {
+          // Si falla, reintentar en 100ms
+          setTimeout(saltarAlTiempo, 100);
         }
       } else {
-        setTimeout(trySetTime, 100);
+        // Si no está listo, esperar y reintentar
+        setTimeout(saltarAlTiempo, 100);
       }
     };
-    trySetTime();
-  }).catch((e) => {
-    console.error("Error al reproducir el audio:", e);
+    saltarAlTiempo();
+  }).catch(e => {
+    console.error("Error al reproducir:", e);
   });
 };
+
 
 
 // Quitar autoplay al cargar la página
