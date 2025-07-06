@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Feliz 7 de julio 💞</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Fuentes bonitas -->
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@300;500&family=Raleway:wght@700&family=Quicksand:wght@500&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      height: 100vh;
+      overflow: hidden;
+      background: linear-gradient(120deg, #e7d1f7, #f5e1fa, #ecd6f7);
+      background-size: 600% 600%;
+      animation: fondoAnimado 20s ease infinite;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      opacity: 0; transform: scale(0.95);
+      animation: entrada 1.2s forwards ease-out;
+      color: #5c2c90;
+      position: relative;
+      padding: 0 10px;
+    }
+    @keyframes fondoAnimado {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    @keyframes entrada {
+      to { opacity: 1; transform: scale(1); }
+    }
+    .mensaje {
+      position: absolute;
+      top: 20px;
+      width: 100%;
+      max-width: 600px;
+      text-align: center;
+      font-size: 2.5rem;
+      padding: 0 20px;
+      z-index: 2;
+      text-shadow: 2px 2px 4px #ffffff80;
+      user-select: none;
+      word-break: break-word;
+      animation: entradaTexto 2s ease-out forwards;
+      opacity: 0;
+    }
+    @keyframes entradaTexto {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .mensaje .frase-cursi {
+      font-family: 'Raleway', sans-serif;
+      font-size: 1.8rem;
+      color: #7a4ea1;
+      margin-bottom: 15px;
+      opacity: 0.95;
+      font-weight: 700;
+      animation: resplandor 2s ease-in-out infinite alternate;
+    }
+    @keyframes resplandor {
+      from { text-shadow: 0 0 5px #fff, 0 0 10px #c89ffb; }
+      to { text-shadow: 0 0 15px #fff, 0 0 25px #bb87e7; }
+    }
+    .icono, .toque {
+      position: absolute;
+      pointer-events: none;
+      user-select: none;
+      z-index: 1;
+    }
+    .icono { top: -10px; animation: caer 5s linear infinite; }
+    .toque { animation: pop 1s ease-out forwards; z-index:3; }
+    @keyframes caer {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+    @keyframes pop {
+      0% { transform: scale(0.3); opacity: 1; }
+      100% { transform: scale(1.5); opacity: 0; }
+    }
+    .lyrics {
+      position: fixed;
+      bottom: 40px;
+      width: 90%;
+      max-width: 600px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-style: italic;
+      font-weight: 500;
+      color: #6a3f9b;
+      text-align: center;
+      line-height: 1.6;
+      font-size: 1.2rem;
+      user-select: none;
+      pointer-events: none;
+      text-shadow: 1px 1px 2px #ffffffaa, 0 0 10px #bca1e7cc;
+      backdrop-filter: blur(3px);
+      border-radius: 10px;
+      padding: 12px 15px;
+      background: rgba(255, 255, 255, 0.3);
+      animation: movimientoLyrics 12s ease-in-out infinite alternate;
+      z-index: 0;
+      white-space: pre-wrap;
+      font-family: 'Quicksand', sans-serif;
+    }
+    @keyframes movimientoLyrics {
+      0% { transform: translate(-50%, 0); }
+      100% { transform: translate(-50%, -10px); }
+    }
+    #clickToPlay {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255 255 255 / 0.9);
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px #8e6ad6cc;
+      font-size: 1.4rem;
+      color: #5c2c90;
+      cursor: pointer;
+      z-index: 100;
+      user-select: none;
+      text-align: center;
+      max-width: 90%;
+      font-weight: 600;
+      display: none;
+      transition: opacity 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+    }
+    #clickToPlay.show {
+      display: block;
+    }
+    /* Pantalla de inicio */
+    #intro {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(270deg, #7a4ea1, #4a90e2, #a379d8, #67a3f0);
+      background-size: 800% 800%;
+      animation: introFondoAnimado 15s ease infinite;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      font-size: 1.8rem;
+      font-family: 'Raleway', sans-serif;
+      color: #fff;
+      padding: 20px;
+    }
+
+    @keyframes introFondoAnimado {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    #intro > div.buttons-container {
+      position: relative;
+      margin-top: 30px;
+      width: 200px;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    #intro button {
+      padding: 10px 20px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 8px;
+      background: #d2b4f7;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      flex: 1;
+    }
+    #btnNo {
+      position: static;
+      transform: none !important;
+      transition: transform 0.3s ease;
+    }
+    #btnNo:hover {
+      transform: translate(calc(150px + var(--randomX, 0px)), calc(50px + var(--randomY, 0px))) rotate(10deg);
+    }
+    /* Pantalla de carga */
+    #pantallaCarga {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(255,255,255,0.95);
+      z-index: 300;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      font-family: 'Raleway', sans-serif;
+      color: #5c2c90;
+      padding: 20px;
+    }
+    #barraCarga {
+      width: 80%;
+      max-width: 600px;
+      height: 20px;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 10px #c89ffb;
+      margin-top: 30px;
+    }
+    #barraCargaInner {
+      height: 100%;
+      width: 0%;
+      background: #b57ee0;
+      animation: llenarBarra 5s linear forwards;
+    }
+    @keyframes llenarBarra {
+      to { width: 100%; }
+    }
+    /* Input nombre */
+    #inputNombreContenedor {
+      margin-top: 25px;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+    #inputNombreContenedor input {
+      padding: 10px 15px;
+      font-size: 1.2rem;
+      border-radius: 8px;
+      border: 2px solid #b57ee0;
+      outline: none;
+      font-family: 'Poppins', sans-serif;
+      width: 250px;
+      text-align: center;
+    }
+    #inputNombreContenedor button {
+      padding: 10px 25px;
+      font-size: 1.2rem;
+      border-radius: 8px;
+      border: none;
+      background: #7a4ea1;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+    #inputNombreContenedor button:hover {
+      background: #5c2c90;
+    }
+    #errorNombre {
+      color: #c13c3c;
+      font-weight: 700;
+      font-size: 1rem;
+      height: 24px;
+      user-select: none;
+      text-align: center;
+      min-height: 24px;
+    }
+  </style>
+</head>
+<body>
+  <!-- INTRO -->
+  <div id="intro">
+    <div id="textoIntro">¿Quieres ver tu sorpresa?</div>
+    <div class="buttons-container">
+      <button id="btnSi">Sí 💜</button>
+      <button id="btnNo">No 🙈</button>
+    </div>
+
+    <div id="inputNombreContenedor">
+      <div>Introduce tu nombre, tengo que ver que si eres tú</div>
+      <input type="text" id="inputNombre" placeholder="Escribe tu nombre aquí" autocomplete="off" />
+      <button id="btnEnviarNombre">Enviar</button>
+      <div id="errorNombre"></div>
+    </div>
+  </div>
+
+  <!-- PANTALLA DE CARGA -->
+  <div id="pantallaCarga">
+    <div id="fraseCarga">Cargando...</div>
+    <div id="barraCarga"><div id="barraCargaInner"></div></div>
+  </div>
+
+  <!-- AUDIO -->
+  <audio id="musicaFondo" src="https://archive.org/download/TS-SN/01.%20Mine.mp3" preload="auto" loop></audio>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <div class="mensaje">
+    <div class="frase-cursi">
+      Eres mi Kate Bishop, siempre precisa en cada latido, y mi Spider‑Gwen, que cuida mi mundo sin importar nada.
+    </div>
+    Cada corazón que cae... <br> es un "te quiero" de parte mía (Son infinitos hehe &lt;3) 💜
+  </div>
+
+  <div class="lyrics">
+You said, "I'll never leave you alone"<br>
+You said, "I remember how we felt,<br> sitting by the water"<br>
+And every time I look at you,<br> it's like the first time<br>
+I fell in love with a careless man's careful daughter<br>
+She is the best thing that's ever been mine
+  </div>
+
+  <div id="clickToPlay">Haz clic para escuchar la música 🎵</div>
+
+  <script>
+    // Botón No que se mueve aleatoriamente al hacer hover
+const btnNo = document.getElementById('btnNo');
+btnNo.addEventListener('mouseenter', () => {
+  const randomX = (Math.random() * 100) - 50; // -50 a 50
+  const randomY = (Math.random() * 100) - 50; // -50 a 50
+  btnNo.style.setProperty('--randomX', randomX + 'px');
+  btnNo.style.setProperty('--randomY', randomY + 'px');
+});
+
+// Evitar que el botón No pueda ser clickeado y no cambie posición
+btnNo.addEventListener('click', (e) => {
+  e.preventDefault();
+  // No hacemos nada cuando lo presionan, no cambia posición ni nada más
+});
+
+// Mensajes y emojis al presionar No
+const intro = document.getElementById('intro');
+const pantallaCarga = document.getElementById('pantallaCarga');
+const fraseCarga = document.getElementById('fraseCarga');
+const barraCargaInner = document.getElementById('barraCargaInner');
+const contenido = document.querySelector('.mensaje');
+const lyrics = document.querySelector('.lyrics');
+const clickToPlay = document.getElementById('clickToPlay');
+const audio = document.getElementById('musicaFondo');
+const startAt = 170;
+
+const frasesCarga = [
+  "Cargando momentos bonitos...",
+  "Un segundo, estoy preparando algo especial",
+  "Esto no es magia... pero se parece",
+  "Se me olvidó la programación, pero por ti aprendí de nuevo",
+  "Ajustando corazoncitos..."
+];
+
+const mensajesNo = [
+  "😭 No te vayas...",
+  "😓 Piénsalo bien",
+  "😔 Yo sé que quieres",
+  "🥺 Solo un clic más"
+];
+
+let noMensajeIndex = 0;
+let noMensajeTimeout;
+
+btnNo.addEventListener('click', () => {
+  if(noMensajeTimeout) clearTimeout(noMensajeTimeout);
+
+  // Crear mensaje flotante con emoji
+  const msg = document.createElement('div');
+  msg.textContent = mensajesNo[noMensajeIndex];
+  msg.style.position = 'fixed';
+  msg.style.top = (Math.random() * 60 + 20) + 'vh';
+  msg.style.left = (Math.random() * 80 + 10) + 'vw';
+  msg.style.fontSize = '2rem';
+  msg.style.color = '#a052a0';
+  msg.style.fontWeight = '700';
+  msg.style.textShadow = '0 0 5px #fff';
+  msg.style.zIndex = 500;
+  msg.style.userSelect = 'none';
+  msg.style.opacity = '1';
+  msg.style.transition = 'opacity 1.5s ease';
+
+  document.body.appendChild(msg);
+
+  setTimeout(() => {
+    msg.style.opacity = '0';
+    setTimeout(() => {
+      msg.remove();
+    }, 1500);
+  }, 1500);
+
+  noMensajeIndex++;
+  if(noMensajeIndex >= mensajesNo.length) noMensajeIndex = 0;
+});
+
+// Manejo botón Sí: mostrar input para nombre
+const btnSi = document.getElementById('btnSi');
+const inputNombreContenedor = document.getElementById('inputNombreContenedor');
+const inputNombre = document.getElementById('inputNombre');
+const btnEnviarNombre = document.getElementById('btnEnviarNombre');
+const errorNombre = document.getElementById('errorNombre');
+const textoIntro = document.getElementById('textoIntro');
+
+const mensajesError = [
+  "Tú no eres a quien le hice esta página, fuimono 🤭",
+  "Nombre incorrecto, inténtalo otra vez 😅",
+  "¿Seguro que eres tú? 😔",
+  "No te rindas, inténtalo de nuevo 🥺",
+  "¡Ups! Ese no es el nombre correcto 🤨"
+];
+
+btnSi.addEventListener('click', () => {
+  // Ocultar texto intro
+  textoIntro.style.display = 'none';
+
+  // Ocultamos botones iniciales
+  btnSi.style.display = 'none';
+  btnNo.style.display = 'none';
+
+  // Mostramos input para nombre
+  inputNombreContenedor.style.display = 'flex';
+  inputNombre.focus();
+});
+
+btnEnviarNombre.addEventListener('click', () => {
+  const nombreIngresado = inputNombre.value.trim().toLowerCase();
+  const nombresValidos = ['karina', 'kari', 'karisita'];
+
+  if(nombresValidos.includes(nombreIngresado)){
+    errorNombre.textContent = '';
+    // Ocultar intro y mostrar pantalla carga
+    intro.style.display = 'none';
+    pantallaCarga.style.display = 'flex';
+
+    // Animar frases y barra
+    let i = 0;
+    fraseCarga.textContent = frasesCarga[i];
+    const fraseInterval = setInterval(() => {
+      i++;
+      if(i >= frasesCarga.length) i = 0;
+      fraseCarga.textContent = frasesCarga[i];
+    }, 1200);
+
+    barraCargaInner.style.width = '0%';
+    barraCargaInner.style.animation = 'none';
+    void barraCargaInner.offsetWidth; // reflow para reiniciar animación
+    barraCargaInner.style.animation = 'llenarBarra 5s linear forwards';
+
+    setTimeout(() => {
+      clearInterval(fraseInterval);
+      pantallaCarga.style.display = 'none';
+      contenido.style.opacity = 1;
+      lyrics.style.opacity = 1;
+      clickToPlay.classList.add('show');
+    }, 5200);
+
+  } else {
+    // Mostrar mensaje de error aleatorio gracioso
+    const randomIndex = Math.floor(Math.random() * mensajesError.length);
+    errorNombre.textContent = mensajesError[randomIndex];
+    inputNombre.focus();
+  }
+});
+
+// Emojis que caen y toques en pantalla
+const emojis = ["💖", "🤍", "🏹"];
+const crearIcono = () => {
+  const icono = document.createElement("div");
+  icono.classList.add("icono");
+  icono.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+  icono.style.left = Math.random() * window.innerWidth + "px";
+  icono.style.fontSize = Math.random() * 20 + 20 + "px";
+  icono.style.animationDuration = Math.random() * 2 + 4 + "s";
+  document.body.appendChild(icono);
+  setTimeout(() => icono.remove(), 7000);
+};
+const crearToque = (x, y) => {
+  const toque = document.createElement("div");
+  toque.classList.add("toque");
+  toque.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+  toque.style.left = x + "px";
+  toque.style.top = y + "px";
+  toque.style.fontSize = (Math.random() * 25 + 20) + "px";
+  document.body.appendChild(toque);
+  setTimeout(() => toque.remove(), 1000);
+};
+setInterval(crearIcono, 80);
+document.addEventListener("click", e => crearToque(e.clientX, e.clientY));
+document.addEventListener("mousemove", e => {
+  if (Math.random() < 0.05) crearToque(e.clientX, e.clientY);
+});
+
+// Música y control de volumen - Solo se activa DESPUÉS de la carga y validación del nombre
+const fadeIn = () => {
+  let vol = 0;
+  const target = 0.5;
+  const step = 0.05;
+  const interval = setInterval(() => {
+    vol += step;
+    if (vol >= target) {
+      audio.volume = target;
+      clearInterval(interval);
+    } else {
+      audio.volume = vol;
+    }
+  }, 300);
+};
+
+const iniciarMusica = () => {
+  clickToPlay.classList.remove('show');
+  audio.currentTime = startAt;
+  setTimeout(() => {
+    audio.play().then(() => fadeIn());
+  }, 150);
+};
+
+// Quitar autoplay al cargar la página
+window.addEventListener('DOMContentLoaded', () => {
+  contenido.style.opacity = 0;
+  lyrics.style.opacity = 0;
+  audio.pause();
+  audio.volume = 0;
+  audio.currentTime = startAt;
+  clickToPlay.classList.remove('show');
+});
+
+clickToPlay.addEventListener('click', iniciarMusica);
+document.body.addEventListener('click', () => {
+  if (clickToPlay.classList.contains('show')) {
+    iniciarMusica();
+  }
+}, { once: true });
+
+  </script>
+</body>
+</html>
