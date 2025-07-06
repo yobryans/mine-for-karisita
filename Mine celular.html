@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Lluvia de Amor Animada</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      height: 100vh;
+      overflow: hidden;
+      background: linear-gradient(120deg, #e7d1f7, #f5e1fa, #ecd6f7);
+      background-size: 600% 600%;
+      animation: fondoAnimado 20s ease infinite;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      font-family: 'Segoe UI', sans-serif;
+      opacity: 0; transform: scale(0.95);
+      animation: entrada 1.2s forwards ease-out;
+      color: #5c2c90;
+      position: relative;
+      padding: 0 10px;
+    }
+    @keyframes fondoAnimado {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    @keyframes entrada {
+      to { opacity: 1; transform: scale(1); }
+    }
+    .mensaje {
+      position: absolute;
+      top: 20px;
+      width: 100%;
+      max-width: 600px;
+      text-align: center;
+      font-size: 2.5rem;
+      padding: 0 20px;
+      z-index: 2;
+      text-shadow: 2px 2px 4px #ffffff80;
+      user-select: none;
+      word-break: break-word;
+    }
+    .mensaje .frase-cursi {
+      font-size: 1.2rem;
+      color: #7a4ea1;
+      margin-bottom: 15px;
+      opacity: 0.85;
+      font-style: italic;
+    }
+    .icono, .toque {
+      position: absolute;
+      pointer-events: none;
+      user-select: none;
+      z-index: 1;
+    }
+    .icono { top: -10px; animation: caer 5s linear infinite; }
+    .toque { animation: pop 1s ease-out forwards; z-index:3; }
+    @keyframes caer {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+    @keyframes pop {
+      0% { transform: scale(0.3); opacity: 1; }
+      100% { transform: scale(1.5); opacity: 0; }
+    }
+    .lyrics {
+      position: fixed;
+      bottom: 40px;
+      width: 90%;
+      max-width: 600px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-style: italic;
+      font-weight: 500;
+      color: #a584c7cc;
+      text-align: center;
+      line-height: 1.5;
+      font-size: 1.1rem;
+      user-select: none;
+      pointer-events: none;
+      text-shadow:
+        1px 1px 2px #ffffffaa,
+        0 0 10px #bca1e7cc;
+      backdrop-filter: blur(3px);
+      border-radius: 10px;
+      padding: 12px 15px;
+      background: rgba(255 255 255 / 0.15);
+      animation: lyricsFade 10s ease infinite alternate;
+      z-index: 0;
+      white-space: pre-wrap;
+    }
+    @keyframes lyricsFade {
+      0% { opacity: 0.4; }
+      100% { opacity: 0.8; }
+    }
+
+    #clickToPlay {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255 255 255 / 0.9);
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px #8e6ad6cc;
+      font-size: 1.4rem;
+      color: #5c2c90;
+      cursor: pointer;
+      z-index: 100;
+      user-select: none;
+      text-align: center;
+      max-width: 90%;
+      font-weight: 600;
+      display: none;
+      transition: opacity 0.3s ease;
+    }
+    #clickToPlay.show {
+      display: block;
+    }
+
+    /* Responsive para móviles */
+    @media (max-width: 480px) {
+      .mensaje {
+        font-size: 1.5rem;
+        padding: 0 10px;
+        top: 10px;
+      }
+      .mensaje .frase-cursi {
+        font-size: 1rem;
+        margin-bottom: 10px;
+      }
+      .lyrics {
+        font-size: 0.9rem;
+        bottom: 20px;
+        padding: 8px 10px;
+        max-width: 90%;
+      }
+      #clickToPlay {
+        font-size: 1.2rem;
+        padding: 15px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <audio id="musicaFondo" src="https://archive.org/download/TS-SN/01.%20Mine.mp3" preload="auto" loop></audio>
+
+  <div class="mensaje">
+    <div class="frase-cursi">
+      Eres mi Kate Bishop, siempre precisa en cada latido, y mi Spider‑Man, que cuida mi mundo sin importar nada.
+    </div>
+    Cada corazón que cae... <br> es un "te quiero" de parte mia (Son infinitos hehe &lt;3)  💜
+  </div>
+
+  <div class="lyrics">
+You said, "I'll never leave you alone"<br>
+You said, "I remember how we felt,<br> sitting by the water"<br>
+And every time I look at you,<br> it's like the first time<br>
+I fell in love with a careless man's careful daughter<br>
+She is the best thing that's ever been mine
+  </div>
+
+  <div id="clickToPlay">Haz clic para escuchar la música 🎵</div>
+
+  <script>
+    const emojis = ["💖", "🤍", "🏹"];
+    const crearIcono = () => {
+      const icono = document.createElement("div");
+      icono.classList.add("icono");
+      icono.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+      icono.style.left = Math.random() * window.innerWidth + "px";
+      icono.style.fontSize = Math.random() * 20 + 10 + "px";
+      icono.style.animationDuration = Math.random() * 3 + 3 + "s";
+      document.body.appendChild(icono);
+      setTimeout(() => icono.remove(), 6000);
+    };
+    const crearToque = (x, y) => {
+      const toque = document.createElement("div");
+      toque.classList.add("toque");
+      toque.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+      toque.style.left = x + "px";
+      toque.style.top = y + "px";
+      toque.style.fontSize = (Math.random() * 25 + 20) + "px";
+      document.body.appendChild(toque);
+      setTimeout(() => toque.remove(), 1000);
+    };
+    setInterval(crearIcono, 120);
+    document.addEventListener("click", e => crearToque(e.clientX, e.clientY));
+    document.addEventListener("mousemove", e => {
+      if (Math.random() < 0.03) crearToque(e.clientX, e.clientY);
+    });
+
+    const audio = document.getElementById('musicaFondo');
+    const clickToPlay = document.getElementById('clickToPlay');
+    const startAt = 170; // 2:50 en segundos
+
+    const fadeIn = () => {
+      let vol = 0;
+      const target = 0.5;
+      const step = 0.05;
+      const interval = setInterval(() => {
+        vol += step;
+        if (vol >= target) {
+          audio.volume = target;
+          clearInterval(interval);
+        } else {
+          audio.volume = vol;
+        }
+      }, 300);
+    };
+
+    const iniciarMusica = () => {
+      clickToPlay.classList.remove('show');
+      audio.currentTime = startAt;
+      setTimeout(() => {
+        audio.play().then(() => fadeIn());
+      }, 150);
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      audio.volume = 0;
+      audio.currentTime = startAt;
+      audio.play().then(() => {
+        fadeIn();
+      }).catch(() => {
+        clickToPlay.classList.add('show');
+      });
+    });
+
+    clickToPlay.addEventListener('click', iniciarMusica);
+    document.body.addEventListener('click', () => {
+      if (clickToPlay.classList.contains('show')) {
+        iniciarMusica();
+      }
+    }, { once: true });
+  </script>
+</body>
+</html>
