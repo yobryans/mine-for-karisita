@@ -633,31 +633,25 @@ const iniciarMusica = () => {
   audio.volume = 0;
   audio.currentTime = 0;
 
-  audio.play().then(() => {
-    const saltarAlTiempo = () => {
-      // Verificamos que el audio esté listo para cambiar el tiempo
-      if (audio.readyState >= 2) {
-        try {
-          audio.currentTime = startAt; // 170 segundos
-          // Si el audio está pausado por el salto, reproducir de nuevo
-          if (audio.paused) {
-            audio.play();
-          }
-          fadeIn();
-        } catch (error) {
-          // Si falla, reintentar en 100ms
-          setTimeout(saltarAlTiempo, 100);
-        }
-      } else {
-        // Si no está listo, esperar y reintentar
-        setTimeout(saltarAlTiempo, 100);
-      }
-    };
-    saltarAlTiempo();
-  }).catch(e => {
+  // Escuchar evento canplay para saber cuando podemos cambiar currentTime
+  const onCanPlay = () => {
+    audio.removeEventListener('canplay', onCanPlay);
+    try {
+      audio.currentTime = startAt;
+    } catch(e) {
+      // Safari puede tirar error si no está listo, lo ignoramos
+    }
+    if (audio.paused) audio.play();
+    fadeIn();
+  };
+
+  audio.addEventListener('canplay', onCanPlay);
+
+  audio.play().catch(e => {
     console.error("Error al reproducir:", e);
   });
 };
+
 
 
 
