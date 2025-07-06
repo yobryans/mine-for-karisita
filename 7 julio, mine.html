@@ -380,6 +380,35 @@
     padding: 8px 16px;
   }
 }
+.aesthetic-btn {
+  display: block;
+  margin: 0 auto 40px auto;
+  padding: 12px 28px;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #7a4ea1;
+  background: rgba(183, 126, 224, 0.2);
+  border: 2px solid #7a4ea1;
+  border-radius: 25px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px #b57ee0aa;
+  user-select: none;
+  backdrop-filter: blur(6px);
+  max-width: 220px;
+  width: 90%;
+  text-transform: uppercase;
+}
+
+.aesthetic-btn:hover {
+  background: #b57ee0;
+  color: white;
+  box-shadow: 0 0 25px #b57ee0ff;
+  transform: scale(1.05);
+}
+
 
 
   </style>
@@ -400,6 +429,7 @@
       <div id="errorNombre"></div>
     </div>
   </div>
+<button id="btnVerEdit" class="aesthetic-btn">VER EDIT - MINE</button>
 
   <!-- PANTALLA DE CARGA -->
   <div id="pantallaCarga">
@@ -564,6 +594,19 @@ setTimeout(() => {
   pantallaCarga.style.display = 'none';
 
   // Animaciones de entrada
+
+// Tu código actual:
+pantallaCarga.style.display = 'none';
+contenido.classList.add('animacionEntrada');
+lyrics.classList.add('animacionEntradaLyrics');
+clickToPlay.classList.add('show');
+
+// Agrega justo aquí:
+setTimeout(() => {
+  document.getElementById('verEditBtn').style.display = 'block';
+}, 10000);
+
+
   contenido.classList.add('animacionEntrada');
   lyrics.classList.add('animacionEntradaLyrics');
 
@@ -692,6 +735,12 @@ function detenerCorazonesCarga() {
   clearInterval(intervaloCorazonesCarga);
   document.querySelectorAll('.corazonCarga').forEach(c => c.remove());
 }
+const btnVerEdit = document.getElementById('btnVerEdit');
+const linkEdit = "https://tu-link-aqui.com"; // <-- Cambia este link cuando lo tengas
+
+btnVerEdit.addEventListener('click', () => {
+  window.open(linkEdit, '_blank');
+});
 
   </script>
 </body>
