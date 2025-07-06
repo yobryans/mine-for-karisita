@@ -13,7 +13,7 @@
     body {
       height: 100vh;
       overflow: hidden;
-      background: linear-gradient(120deg, #e7d1f7, #f5e1fa, #ecd6f7);
+      background: linear-gradient(120deg, #e7d1f7, #e1f1fa, #ecd6f7);
       background-size: 600% 600%;
       animation: fondoAnimado 20s ease infinite;
       display: flex;
@@ -298,6 +298,32 @@
       text-align: center;
       min-height: 24px;
     }
+    #pantallaBienvenida {
+  display: none;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(135deg, #b57ee0, #7a4ea1);
+  color: white;
+  font-family: 'Raleway', sans-serif;
+  font-size: 2rem;
+  z-index: 350;
+  user-select: none;
+  pointer-events: auto;
+  flex-direction: column;
+}
+
+#pantallaBienvenida.show {
+  display: flex;
+  opacity: 1;
+  transform: scale(1);
+}
+
 .animacionEntrada {
   animation: entradaBonita 1.2s ease-out forwards;
   opacity: 0;
@@ -379,10 +405,10 @@
     font-size: 1rem;
     padding: 8px 16px;
   }
+
 }
 .aesthetic-btn {
-  display: block;
-  margin: 0 auto 40px auto;
+  margin: 20px auto 30px auto; /* en lugar de 0 auto 40px auto */
   padding: 12px 28px;
   font-family: 'Quicksand', sans-serif;
   font-weight: 700;
@@ -408,9 +434,16 @@
   box-shadow: 0 0 25px #b57ee0ff;
   transform: scale(1.05);
 }
+.aesthetic-btn {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
 
-
-
+.aesthetic-btn.visible {
+  opacity: 1;
+  transform: scale(1);
+}
   </style>
 </head>
 <body>
@@ -429,13 +462,26 @@
       <div id="errorNombre"></div>
     </div>
   </div>
-<button id="btnVerEdit" class="aesthetic-btn">VER EDIT - MINE</button>
+<button id="btnVerEdit" class="aesthetic-btn" style="display:none;">VER EDIT - MINE</button>
+
+
+
 
   <!-- PANTALLA DE CARGA -->
   <div id="pantallaCarga">
     <div id="fraseCarga">Cargando...</div>
     <div id="barraCarga"><div id="barraCargaInner"></div></div>
   </div>
+
+  <!-- PANTALLA DE BIENVENIDA -->
+<div id="pantallaBienvenida" style="display:none; position: fixed; top:0; left:0; width:100%; height:100%; 
+  background: linear-gradient(135deg, #b57ee0, #7a4ea1); 
+  justify-content: center; align-items: center; 
+  color: white; font-family: 'Raleway', sans-serif; font-size: 2rem; 
+  z-index: 350; user-select:none;">
+  ¡Bienvenida, Karina! 💜
+</div>
+
 
   <!-- AUDIO -->
   <audio id="musicaFondo" src="https://archive.org/download/TS-SN/01.%20Mine.mp3" preload="auto" loop></audio>
@@ -497,7 +543,8 @@ const mensajesNo = [
   "😭 Por que le picas a no?",
   "😓 Piénsalo bien",
   "😔 Yo sé que quieres",
-  "🥺 Oe que mala"
+  "🥺 Oe que mala",
+  "🥺 Dice Hailee que oprimas que si",
 ];
 
 let noMensajeIndex = 0;
@@ -513,7 +560,9 @@ btnNo.addEventListener('click', () => {
   msg.style.top = (Math.random() * 60 + 20) + 'vh';
   msg.style.left = (Math.random() * 80 + 10) + 'vw';
   msg.style.fontSize = '2rem';
-  msg.style.color = '#a052a0';
+  msg.style.color = '#ffffff';
+  msg.style.transform = 'scale(0.6) translateY(0)';
+  msg.style.transition = 'all 1.2s ease';
   msg.style.fontWeight = '700';
   msg.style.textShadow = '0 0 5px #fff';
   msg.style.zIndex = 500;
@@ -524,11 +573,14 @@ btnNo.addEventListener('click', () => {
   document.body.appendChild(msg);
 
   setTimeout(() => {
-    msg.style.opacity = '0';
-    setTimeout(() => {
-      msg.remove();
-    }, 1500);
-  }, 1500);
+  msg.style.opacity = '0';
+  msg.style.transform = 'scale(1.1) translateY(-50px)';
+  setTimeout(() => {
+    msg.remove();
+  }, 1000);
+}, 1500);
+
+
 
   noMensajeIndex++;
   if(noMensajeIndex >= mensajesNo.length) noMensajeIndex = 0;
@@ -593,25 +645,63 @@ setTimeout(() => {
   clearInterval(fraseInterval);
   pantallaCarga.style.display = 'none';
 
-  // Animaciones de entrada
+  const pantallaBienvenida = document.getElementById('pantallaBienvenida');
+  pantallaBienvenida.style.display = 'flex';
 
-// Tu código actual:
-pantallaCarga.style.display = 'none';
-contenido.classList.add('animacionEntrada');
-lyrics.classList.add('animacionEntradaLyrics');
-clickToPlay.classList.add('show');
+  // Agrega clase 'show' con pequeño delay para animar entrada
+  setTimeout(() => {
+    pantallaBienvenida.classList.add('show');
+  }, 50);
 
-// Agrega justo aquí:
+  // Después de 4 segundos, quitar clase 'show' para animar salida
+  setTimeout(() => {
+    pantallaBienvenida.classList.remove('show');
+
+    // Espera transición para ocultar pantalla y mostrar contenido principal
+    setTimeout(() => {
+      pantallaBienvenida.style.display = 'none';
+
+      contenido.style.display = 'block';
+      contenido.classList.add('animacionEntrada');
+
+      lyrics.style.display = 'block';
+      lyrics.classList.add('animacionEntradaLyrics');
+
+      clickToPlay.style.display = 'block';
+      clickToPlay.classList.add('show');
+
+      function mostrarBtnVerEditConAnimacion() {
+  btnVerEdit.style.display = 'block';
+  btnVerEdit.classList.remove('visible');  // Remover para reiniciar animación
+  void btnVerEdit.offsetWidth;             // Forzar reflow
+  btnVerEdit.classList.add('visible');     // Volver a agregar para activar animación
+}
+
+// ...
+
+// Mostrar botón "VER EDIT" después de 7 segundos (7000 ms)
 setTimeout(() => {
-  document.getElementById('verEditBtn').style.display = 'block';
+  mostrarBtnVerEditConAnimacion();
+}, 7000);
+
+// Elimina este otro setTimeout que sólo añade 'visible' sin mostrar el botón
+// setTimeout(() => {
+//   btnVerEdit.classList.add('visible');
+// }, 10000);
+
+
+
+      // Si bloqueaste scroll, lo habilitas aquí
+      document.body.style.overflow = 'auto';
+
+    }, 600); // Duración de la transición CSS (0.6s)
+  }, 4000);
+}, 5200);
+
+setTimeout(() => {
+  btnVerEdit.classList.add('visible');
 }, 10000);
 
-
-  contenido.classList.add('animacionEntrada');
-  lyrics.classList.add('animacionEntradaLyrics');
-
-  clickToPlay.classList.add('show');
-}, 5200);
 
 
 } else {
@@ -671,29 +761,34 @@ const fadeIn = () => {
 
 const iniciarMusica = () => {
   clickToPlay.classList.remove('show');
+  clickToPlay.style.display = 'none';  // Oculta el botón al hacer clic
 
   audio.pause();
   audio.volume = 0;
-  audio.currentTime = 0;
 
-  // Escuchar evento canplay para saber cuando podemos cambiar currentTime
-  const onCanPlay = () => {
-    audio.removeEventListener('canplay', onCanPlay);
+  // Esperar evento loadedmetadata para asegurar que se puede setear currentTime
+  const onMetadataLoaded = () => {
+    audio.removeEventListener('loadedmetadata', onMetadataLoaded);
+
     try {
-      audio.currentTime = startAt;
+      audio.currentTime = startAt; // saltar a 2:50 min
     } catch(e) {
-      // Safari puede tirar error si no está listo, lo ignoramos
+      console.warn("No se pudo setear currentTime:", e);
     }
-    if (audio.paused) audio.play();
+
+    audio.play().catch(e => {
+      console.error("Error al reproducir:", e);
+    });
+
     fadeIn();
   };
 
-  audio.addEventListener('canplay', onCanPlay);
+  audio.addEventListener('loadedmetadata', onMetadataLoaded);
 
-  audio.play().catch(e => {
-    console.error("Error al reproducir:", e);
-  });
+  // Forzar carga del audio para que se dispare loadedmetadata
+  audio.load();
 };
+
 
 
 
